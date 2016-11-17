@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "708270473886",
+    "firebase_url": "https://motivate-f6209.firebaseio.com",
+    "project_id": "motivate-f6209",
+    "storage_bucket": "motivate-f6209.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:708270473886:android:dc06f2a76e952dba",
+        "android_client_info": {
+          "package_name": "com.nullwelldev.motivate"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "708270473886-a3orda3tpl40t977ps8pdpc1tejvqsm7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.nullwelldev.motivate",
+            "certificate_hash": "49628941002E572EA937EC9E2FA7B045462C6B98"
+          }
+        },
+        {
+          "client_id": "708270473886-8skfhh5ierrsg28eh4doaahoo25ecff5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBeYGF1TeT_WpSZugVqyV3L3rS1fzQbL8s"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "708270473886-8skfhh5ierrsg28eh4doaahoo25ecff5.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
