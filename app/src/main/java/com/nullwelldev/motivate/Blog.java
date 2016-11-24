@@ -8,7 +8,7 @@ public class Blog {
 
     private String title, desc, image;
 
-    public Blog(){
+    public Blog() {
 
     }
 

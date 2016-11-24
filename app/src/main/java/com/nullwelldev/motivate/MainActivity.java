@@ -2,6 +2,7 @@ package com.nullwelldev.motivate;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -13,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.squareup.picasso.Picasso;
@@ -22,15 +24,31 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView mBlogList;
 
     private DatabaseReference mDataBase;
-
+    private FirebaseAuth mAuth;
+    private FirebaseAuth.AuthStateListener mAuthListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mDataBase = FirebaseDatabase.getInstance().getReference().child("Blog");
+        mAuth = FirebaseAuth.getInstance();
+        mAuthListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
 
+                if (firebaseAuth.getCurrentUser() == null) {
+                    //User not logged-in
+
+                    Intent loginIntent = new Intent(MainActivity.this, RegisterActivity.class);
+                    loginIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);//user won't be able to go back to previous page
+                    startActivity(loginIntent);
+
+                }
+            }
+        };
+
+        mDataBase = FirebaseDatabase.getInstance().getReference().child("Blog");
 
         mBlogList = (RecyclerView) findViewById(R.id.blog_list);
         mBlogList.setHasFixedSize(true);
@@ -40,6 +58,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+
+        mAuth.addAuthStateListener(mAuthListener);
 
         FirebaseRecyclerAdapter<Blog, BlogViewHolder> firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<Blog, BlogViewHolder>(
 
@@ -53,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
 
                 viewHolder.setTitle(model.getTitle());
                 viewHolder.setDesc(model.getDesc());
-                viewHolder.setImage(getApplicationContext(),model.getImage());
+                viewHolder.setImage(getApplicationContext(), model.getImage());
 
 
             }
@@ -64,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public static class BlogViewHolder extends RecyclerView.ViewHolder{
+    public static class BlogViewHolder extends RecyclerView.ViewHolder {
         View mView;
 
         public BlogViewHolder(View itemView) {
@@ -72,19 +92,19 @@ public class MainActivity extends AppCompatActivity {
             mView = itemView;
         }
 
-        public void setTitle(String title){
+        public void setTitle(String title) {
 
             TextView post_title = (TextView) mView.findViewById(R.id.post_title);
             post_title.setText(title);
         }
 
-        public void setDesc(String desc){
+        public void setDesc(String desc) {
 
             TextView post_desc = (TextView) mView.findViewById(R.id.post_desc);
             post_desc.setText(desc);
         }
 
-        public void setImage(Context ctx, String image){
+        public void setImage(Context ctx, String image) {
 
             ImageView post_image = (ImageView) mView.findViewById(R.id.post_image);
             Picasso.with(ctx).load(image).into(post_image);
@@ -92,19 +112,28 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main_menu,menu);
+        getMenuInflater().inflate(R.menu.main_menu, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-if(item.getItemId() == R.id.action_add){
-    startActivity(new Intent(MainActivity.this, PostActivity.class));
-}
+        if (item.getItemId() == R.id.action_add) {
+            startActivity(new Intent(MainActivity.this, PostActivity.class));
+        }
+
+        if (item.getItemId() == R.id.action_logout) {
+            logout();
+
+        }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void logout() {
+        //verify if user is logged in or not using auth listener
+        mAuth.signOut();
     }
 }
