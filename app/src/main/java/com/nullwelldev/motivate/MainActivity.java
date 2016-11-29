@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
                 if (firebaseAuth.getCurrentUser() == null) {
                     //User not logged-in
 
-                    Intent loginIntent = new Intent(MainActivity.this, RegisterActivity.class);
+                    Intent loginIntent = new Intent(MainActivity.this, LoginActivity.class);
                     loginIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);//user won't be able to go back to previous page
                     startActivity(loginIntent);
 
